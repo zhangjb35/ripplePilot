@@ -144,9 +144,31 @@
   }
   #tip .tt{font-family:var(--mono);font-size:10px;letter-spacing:.16em;text-transform:uppercase;margin-bottom:5px}
   #tip .td{color:rgba(247,244,236,.75);line-height:1.5}
+  .zoom-gate{
+    position:absolute;left:14px;bottom:14px;z-index:6;cursor:pointer;
+    display:inline-flex;align-items:center;gap:8px;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;text-transform:uppercase;
+    color:var(--teal-deep);background:rgba(247,244,236,.92);backdrop-filter:blur(6px);
+    border:1px dashed rgba(14,122,114,.55);border-radius:999px;padding:8px 14px;
+    box-shadow:0 10px 24px -16px rgba(12,17,24,.55);
+    transition:color .18s,background .18s,border-color .18s,transform .18s;
+  }
+  .zoom-gate:hover{transform:translateY(-1px);border-color:var(--teal)}
+  .zoom-gate .zg-dot{width:7px;height:7px;border-radius:50%;background:rgba(14,122,114,.35);
+    box-shadow:0 0 0 0 rgba(14,122,114,.5);transition:background .18s}
+  .zoom-gate.on{color:var(--paper);background:var(--teal-deep);border-color:var(--teal-deep);
+    border-style:solid}
+  .zoom-gate.on .zg-dot{background:var(--amber);box-shadow:0 0 0 4px rgba(242,177,52,.22)}
   .graph-foot{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;
     padding:13px 20px;border-top:1px solid var(--line);background:var(--paper);
     font-family:var(--mono);font-size:11.5px;color:rgba(16,22,31,.55)}
+  .graph-note{margin:0;padding:12px 20px 14px;border-top:1px solid var(--line);
+    background:linear-gradient(180deg,rgba(242,177,52,.10),rgba(242,177,52,0) 85%),var(--paper);
+    font-family:var(--mono);font-size:11.5px;line-height:1.7;color:rgba(16,22,31,.62)}
+  .graph-note b{font-weight:500;color:#8a6410}
+  .graph-note a{color:var(--teal-deep);text-decoration:none;border-bottom:1px solid rgba(14,122,114,.35)}
+  .graph-note a:hover{border-bottom-color:var(--teal-deep)}
+  @media(max-width:640px){.graph-note{padding:12px 16px 14px;font-size:11px}}
   @media(max-width:640px){#graph{height:440px}}
 
   /* ---------- resource cards ---------- */
@@ -289,7 +311,7 @@
     <div class="whycard rv">
       <div class="wk">03</div>
       <h3>Cross&#8209;species and cross&#8209;method links</h3>
-      <p>Rodent to human translation, ripples to replay, decoded content to recorded ripples — these bridges are usually argued in text. Here they are edges you can traverse, so gaps become findable rather than merely acknowledged.</p>
+      <p>Rodent to human translation, ripples to replay, decoded content to recorded ripples — these bridges are usually argued in text. Here papers, datasets and code sit in one indexable field, so the bridges can be queried and gaps become findable rather than merely acknowledged.</p>
     </div>
     <div class="whycard rv">
       <div class="wk">04</div>
@@ -303,7 +325,7 @@
 <section id="graphsec">
   <div class="sec-head rv">
     <h2>The <i>graph</i></h2>
-    <p>A living nebula of the ripple &amp; replay literature — every dot a paper, dataset, code or concept, wired by how they relate.</p>
+    <p>A living nebula of the ripple &amp; replay literature — every dot a verified paper, dataset, code tool or index term, gathered into one searchable field.</p>
   </div>
   <div class="graph-wrap rv">
     <div class="graph-toolbar">
@@ -313,12 +335,15 @@
         <span><i style="background:var(--coral)"></i>code</span>
         <span><i style="background:#9aa7b5"></i>concept</span>
       </div>
-      <span><span class="kbd">drag</span> pan · <span class="kbd">scroll</span> zoom · <span class="kbd">hover</span> inspect</span>
+      <span><span class="kbd">drag</span> pan · <span class="kbd">scroll</span> <span id="zoomhint">zoom locked</span> · <span class="kbd">hover</span> inspect</span>
     </div>
     <div style="position:relative">
       <svg id="graph"></svg>
       <div id="tip"></div>
+      <button class="zoom-gate" id="zoombtn" type="button" aria-pressed="false">
+        <i class="zg-dot"></i><span id="zoomlabel">Enable zoom</span></button>
     </div>
+    <p class="graph-note"><b>Illustrative snapshot.</b> Every paper, dataset and code node above is a real, citable source; the concept layer is an index vocabulary. The edges are drawn by the force layout, not curated relations — treat proximity as orientation, not as evidence.</p>
     <div class="graph-foot">
       <span id="gstat">—</span>
       <span>graph id · demo-snapshot-2026-10</span>
@@ -338,23 +363,23 @@
       </div>
       <h3>Papers</h3>
       <p>Key publications on SWR detection, replay decoding, sequence replay and consolidation — with metadata and concept tags.</p>
-      <div class="chips"><span class="chip paper">Buzsáki 2015</span><span class="chip paper">Joo &amp; Frank 2018</span><span class="chip paper">+ demo set</span></div>
+      <div class="chips"><span class="chip paper">Buzsáki 2015</span><span class="chip paper">Joo &amp; Frank 2018</span><span class="chip paper">Liu 2022</span></div>
     </div>
     <div class="rescard rv">
       <div class="glyph">
         <svg viewBox="0 0 24 24"><ellipse cx="12" cy="5" rx="9" ry="3"/><path d="M21 12c0 1.66-4 3-9 3s-9-1.34-9-3"/><path d="M3 5v14c0 1.66 4 3 9 3s9-1.34 9-3V5"/></svg>
       </div>
       <h3>Data</h3>
-      <p>Curated ripple / replay datasets — human iEEG and rodent recordings — each with channel maps, sampling rates and QC notes.</p>
-      <div class="chips"><span class="chip data">crcns hc-3</span><span class="chip data">SWR epoched sets</span><span class="chip data">+ lab internal</span></div>
+      <p>Open ripple / replay datasets — rodent LFP and spike recordings, plus a curated mouse SWR set — each with channel maps, sampling rates and QC notes.</p>
+      <div class="chips"><span class="chip data">crcns hc-3</span><span class="chip data">crcns hc-11</span><span class="chip data">IBL / Allen SWR set</span></div>
     </div>
     <div class="rescard rv">
       <div class="glyph">
         <svg viewBox="0 0 24 24"><polyline points="16 18 22 12 16 6"/><polyline points="8 6 2 12 8 18"/></svg>
       </div>
       <h3>Code</h3>
-      <p>Pipelines and toolboxes for detection, curation, decoding and analysis — pinned versions, linked to the papers that use them.</p>
-      <div class="chips"><span class="chip code">ripmap</span><span class="chip code">replay decoders</span><span class="chip code">+ ecosystem</span></div>
+      <p>Pipelines and toolboxes for detection, curation, decoding and analysis — open repositories, each one a real release you can install and cite.</p>
+      <div class="chips"><span class="chip code">ripple_detection</span><span class="chip code">rippl-AI</span></div>
     </div>
   </div>
 </section>
@@ -455,35 +480,35 @@
     const linkLayer=document.createElementNS(NS,'g'); gRoot.appendChild(linkLayer);
     const nodeLayer=document.createElementNS(NS,'g'); gRoot.appendChild(nodeLayer);
 
-    // curated anchors
+    // curated anchors — every entry verified against its source
     const ANCHORS=[
-      {id:'a1', label:'Buzsáki 2015', type:'paper', x:-0.86, y:-0.42, rec:.32, facts:9, desc:'Hippocampal sharp-wave ripples in memory'},
-      {id:'a2', label:'Joo & Frank 2018', type:'paper', x:0.60, y:-0.78, rec:.52, facts:8, desc:'Sharp wave–ripple in memory retrieval'},
-      {id:'a3', label:'Oliva 2016', type:'paper', x:0.02, y:0.06, rec:.68, facts:7, desc:'SWRs as a mechanism for consolidation'},
-      {id:'a4', label:'Gillespie 2021', type:'paper', x:-0.22, y:0.72, rec:.86, facts:8, desc:'Hippocampal replay & task performance'},
-      {id:'a5', label:'Drieu 2022', type:'paper', x:0.80, y:0.30, rec:.95, facts:6, desc:'Ripples & cortical spindles in sleep'},
-      {id:'a6', label:'Vaz 2019', type:'paper', x:-0.52, y:0.22, rec:.45, facts:7, desc:'Replay of experience sequences'},
-      {id:'a7', label:'Zhang 2024', type:'paper', x:0.34, y:-0.10, rec:1.0, facts:10, desc:'Human SWR detection benchmarks'},
-      {id:'a8', label:'Navratilova 2012', type:'paper', x:-0.12, y:-0.80, rec:.24, facts:6, desc:'Replay and reward, place cells'},
-      {id:'a9', label:'Pfeiffer 2025', type:'paper', x:0.18, y:0.84, rec:.98, facts:9, desc:'Replay geometry & content'},
-      {id:'b1', label:'crcns hc-3', type:'data', x:-0.62, y:-0.58, rec:.4, facts:6, desc:'Rodent hippocampal recordings'},
-      {id:'b2', label:'iEEG ripple set', type:'data', x:0.52, y:0.58, rec:.9, facts:7, desc:'Human depth, ripple-epoched'},
-      {id:'b3', label:'replay seq. data', type:'data', x:-0.42, y:0.52, rec:.7, facts:5, desc:'Place-cell replay sequences'},
-      {id:'c1', label:'ripmap', type:'code', x:-0.74, y:0.02, rec:.93, facts:6, desc:'Human SWR curation toolbox'},
-      {id:'c2', label:'replay decoder', type:'code', x:0.24, y:-0.52, rec:.8, facts:5, desc:'Bayesian / clusterless decoding'},
-      {id:'c3', label:'SWR detection', type:'code', x:0.72, y:-0.28, rec:.62, facts:5, desc:'Standard detection pipelines'},
-      {id:'c4', label:'FAT', type:'code', x:-0.04, y:-0.32, rec:.76, facts:4, desc:'Frequency assembly toolbox'}
+      {id:'a1', label:'Buzsáki 2015', type:'paper', x:-0.86, y:-0.42, rec:.32, sz:9, src:'Hippocampus 25:1073', desc:'Sharp-wave ripples as a biomarker for episodic memory'},
+      {id:'a2', label:'Joo & Frank 2018', type:'paper', x:0.60, y:-0.78, rec:.52, sz:8, src:'Nat Rev Neurosci 19:744', desc:'SWR in memory retrieval — immediate use and consolidation'},
+      {id:'a3', label:'Oliva 2016', type:'paper', x:0.02, y:0.06, rec:.68, sz:7, src:'Neuron 91:1342', desc:'Hippocampal CA2 as a trigger of sharp-wave ripples'},
+      {id:'a4', label:'Gillespie 2021', type:'paper', x:-0.22, y:0.72, rec:.86, sz:8, src:'Neuron', desc:'Hippocampal replay reflects specific past experiences'},
+      {id:'a5', label:'Dickey 2022', type:'paper', x:0.80, y:0.30, rec:.95, sz:6, src:'PNAS 119:e2107797119', desc:'Cortical ripples across human sleep, waking and recall'},
+      {id:'a6', label:'Vaz 2020', type:'paper', x:-0.52, y:0.22, rec:.45, sz:7, src:'Science 367:1131', desc:'Replay of cortical spiking sequences in human memory retrieval'},
+      {id:'a7', label:'Liu 2022', type:'paper', x:0.34, y:-0.10, rec:1.0, sz:10, src:'Nat Commun 13:742', desc:'Consensus statement on detecting SWRs in humans'},
+      {id:'a8', label:'Ambrose 2016', type:'paper', x:-0.12, y:-0.80, rec:.24, sz:6, src:'Neuron 91:1124', desc:'Reverse replay is modulated by changing reward'},
+      {id:'a9', label:'Pfeiffer & Foster 2013', type:'paper', x:0.18, y:0.84, rec:.98, sz:9, src:'Nature 497:74', desc:'Place-cell sequences depict future paths to remembered goals'},
+      {id:'b1', label:'crcns hc-3', type:'data', x:-0.62, y:-0.58, rec:.4, sz:6, src:'CRCNS.org', desc:'Rodent hippocampal & entorhinal LFP and spikes, 442 sessions'},
+      {id:'b2', label:'crcns hc-11', type:'data', x:0.52, y:0.58, rec:.9, sz:7, src:'CRCNS.org', desc:'CA1 recordings across rest, novel maze and sleep'},
+      {id:'b3', label:'IBL / Allen SWR set', type:'data', x:-0.42, y:0.52, rec:.7, sz:5, src:'Sci Data 2025 · OSF', desc:'Curated mouse SWR dataset from public Neuropixels'},
+      {id:'c1', label:'ripple_detection', type:'code', x:-0.74, y:0.02, rec:.93, sz:6, src:'Eden-Kramer-Lab', desc:'Detect sharp-wave ripple events from LFP'},
+      {id:'c2', label:'rippl-AI', type:'code', x:0.24, y:-0.52, rec:.8, sz:5, src:'PridaLab', desc:'ML ripple detectors with a manual curation GUI'}
     ];
     const CONCEPTS=['sharp-wave ripple','replay','memory consolidation','sequence replay','replay decoding',
-      'oscillations','human iEEG','place cells','theta phase','spindles','reward','sleep','hippocampus',
-      'prefrontal cortex','amygdala','intracranial','non-invasive','causal necessity','interference','geometry',
-      'transient response','nucleus accumbens','default mode network','replay versus construction','event duration',
-      'waveform-content link','experience selection','review outline','non-invasive decoding','reactivation',
-      'topological features','denoising','falsifiability','humans','ventral hippocampus','ripple duration',
-      'ripple amplitude','ripple frequency','co-occurrence','Bayesian decoding','clusterless decoding',
-      'sleep stimulation','memory consolidation','systems consolidation','synaptic consolidation','recency','salience',
-      'source facts','entity linking','temporal reasoning','budget in tokens','reranking','multilingual','knowledge pages',
-      'facts & entities','observations','reflection','linked records','cross-referencing','curation','validation','preprint'];
+      'oscillations','human iEEG','place cells','grid cells','theta phase','spindles','slow oscillation',
+      'sharp wave','reward','sleep','hippocampus','ventral hippocampus','prefrontal cortex','amygdala',
+      'nucleus accumbens','default mode network','intracranial','non-invasive','non-invasive decoding',
+      'causal necessity','interference','geometry','transient response','replay versus construction',
+      'event duration','waveform-content link','experience selection','reactivation','humans','episodic memory',
+      'semantic memory','source memory','gist','recency','salience','cognitive map','free recall',
+      'virtual navigation','brain state','forward vs reverse replay','replay rate','population decoding',
+      'Bayesian decoding','clusterless decoding','sleep stimulation','systems consolidation',
+      'synaptic consolidation','theta-ripple coupling','ripple-spindle coupling','phase-amplitude coupling',
+      'ripple duration','ripple amplitude','ripple frequency','co-occurrence','schematic replay',
+      'forward replay','reverse replay'];
     const RAD=210;
     const NODES=[];
     const nodeById={};
@@ -492,7 +517,7 @@
     function mix(a,b,t){const A=hex2rgb(a),B=hex2rgb(b);return `rgb(${Math.round(A[0]+(B[0]-A[0])*t)},${Math.round(A[1]+(B[1]-A[1])*t)},${Math.round(A[2]+(B[2]-A[2])*t)})`;}
 
     ANCHORS.forEach(a=>{
-      const n={id:a.id,label:a.label,type:a.type,desc:a.desc,rec:a.rec,facts:a.facts,
+      const n={id:a.id,label:a.label,type:a.type,desc:a.desc,rec:a.rec,sz:a.sz,src:a.src,
                x:a.x*RAD, y:a.y*RAD, vx:0, vy:0, anchor:true};
       NODES.push(n); nodeById[a.id]=n;
     });
@@ -500,7 +525,7 @@
       const th=i*2.399963 + seeded(i)*0.7;
       const rr=RAD*(0.30+0.74*Math.sqrt(seeded(i+50)));
       const n={id:'x'+i, label, type:'concept', desc:'concept · '+label,
-               rec:0.15+0.85*seeded(i+9), facts:1+Math.floor(3*seeded(i+21)),
+               rec:0.15+0.85*seeded(i+9), sz:1+Math.floor(3*seeded(i+21)), src:'index term',
                x:Math.cos(th)*rr, y:Math.sin(th)*rr, vx:0, vy:0, anchor:false};
       NODES.push(n); nodeById[n.id]=n;
     });
@@ -524,7 +549,7 @@
 
     const TYPEC={paper:'#0e7a72', data:'#f2b134', code:'#e4572e', concept:'#9aa7b5'};
     function recColor(r){ return r<0.5 ? mix('#3a6fd8','#8a4fbf', r/0.5) : mix('#8a4fbf','#e4572e',(r-0.5)/0.5); }
-    function nodeR(n){ const base=n.type==='concept'?2.1:7; return base + n.facts*(n.type==='concept'?0.5:1.05); }
+    function nodeR(n){ const base=n.type==='concept'?2.1:7; return base + n.sz*(n.type==='concept'?0.5:1.05); }
 
     const linkEls=LINKS.map(L=>{
       const ln=document.createElementNS(NS,'line');
@@ -581,7 +606,7 @@
     }
     for(let s=0;s<140;s++) tick();
 
-    // view state + slow auto-rotation (like the reference)
+    // view state: fit-to-view, gated zoom, drag pan
     const view={x:0,y:0,k:1};
     function applyView(){ gRoot.setAttribute('transform',`translate(${view.x},${view.y}) scale(${view.k})`); }
     function fit(){
@@ -596,7 +621,20 @@
       applyView();
     }
 
+    // zoom is gated behind an explicit opt-in button
+    const zoomBtn=document.getElementById('zoombtn');
+    const zoomLabel=document.getElementById('zoomlabel');
+    let zoomOn=false;
+    zoomBtn.addEventListener('click',()=>{
+      zoomOn=!zoomOn;
+      zoomBtn.classList.toggle('on',zoomOn);
+      zoomBtn.setAttribute('aria-pressed',zoomOn);
+      zoomLabel.textContent=zoomOn?'Zoom on — click to lock':'Enable zoom';
+      document.getElementById('zoomhint').textContent=zoomOn?'zoom':'zoom locked';
+    });
+
     svg.addEventListener('wheel',e=>{
+      if(!zoomOn) return;           // page scrolls normally until zoom is enabled
       e.preventDefault();
       const bb=svg.getBoundingClientRect();
       const mx=e.clientX-bb.left, my=e.clientY-bb.top;
@@ -622,7 +660,7 @@
     // tooltip
     function showTip(n,ev){
       const col=n.type==='concept'?recColor(n.rec):TYPEC[n.type];
-      tip.innerHTML=`<div class="tt" style="color:${col}">${n.type} · ${n.facts} source facts</div><div style="font-weight:600;margin-bottom:4px">${n.label}</div><div class="td">${n.desc}</div>`;
+      tip.innerHTML=`<div class="tt" style="color:${col}">${n.type} · ${n.src}</div><div style="font-weight:600;margin-bottom:4px">${n.label}</div><div class="td">${n.desc}</div>`;
       tip.style.opacity=1; moveTip(ev);
     }
     function moveTip(ev){
@@ -675,7 +713,7 @@
     const counts={paper:0,data:0,code:0,concept:0};
     NODES.forEach(n=>counts[n.type]++);
     document.getElementById('gstat').textContent=
-      `${counts.paper} papers · ${counts.data} datasets · ${counts.code} code · ${counts.concept} concepts · ${LINKS.length} links`;
+      `${counts.paper} references · ${counts.data} datasets · ${counts.code} code tools · ${counts.concept} index terms · ${LINKS.length} layout links`;
     render();
   })();
 
